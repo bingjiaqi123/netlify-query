@@ -1,0 +1,146 @@
+.mimic-selector-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mimic-selector-container {
+  background-color: white;
+  border-radius: 12px; /* 从16px减少到12px */
+  padding: 12px; /* 从16px减少到12px */
+  max-width: 90vw;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.mimic-selector-header {
+  text-align: center;
+  margin-bottom: 12px; /* 从16px减少到12px */
+}
+
+.mimic-selector-title {
+  display: block;
+  font-size: 16px; /* 从18px减少到16px */
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 2px; /* 从4px减少到2px */
+}
+
+.mimic-selector-subtitle {
+  display: block;
+  font-size: 11px; /* 从12px减少到11px */
+  color: #666;
+}
+
+.joker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); /* 从120px减少到110px */
+  gap: 6px; /* 从8px减少到6px */
+  margin-bottom: 12px; /* 从16px减少到12px */
+}
+
+.joker-card {
+  border: 2px solid #ddd;
+  border-radius: 8px; /* 从12px减少到8px */
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: white;
+}
+
+.joker-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.joker-card.selected {
+  border-color: #4CAF50;
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+}
+
+.joker-card-header {
+  padding: 6px; /* 从8px减少到6px */
+  text-align: center;
+}
+
+.joker-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px; /* 从6px减少到4px */
+}
+
+.joker-name {
+  display: inline;
+  font-size: 13px; /* 从14px减少到13px */
+  font-weight: bold;
+}
+
+.joker-card-body {
+  padding: 6px; /* 从8px减少到6px */
+  background-color: #f5f5f5;
+}
+
+.joker-effect {
+  display: block;
+  font-size: 10px; /* 从11px减少到10px */
+  color: #333;
+  margin-bottom: 4px; /* 从6px减少到4px */
+  line-height: 1.2; /* 从1.3减少到1.2 */
+}
+
+.joker-category {
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: inherit;
+  padding: 1px 3px; /* 从1px 4px减少到1px 3px */
+  border-radius: 4px; /* 从6px减少到4px */
+  font-size: 8px; /* 从9px减少到8px */
+  font-weight: normal;
+}
+
+.mimic-selector-actions {
+  display: flex;
+  gap: 6px; /* 从8px减少到6px */
+  justify-content: center;
+}
+
+.confirm-btn, .cancel-btn {
+  padding: 10px 20px; /* 从12px 24px减少到10px 20px */
+  border-radius: 6px; /* 从8px减少到6px */
+  border: none;
+  font-size: 14px; /* 从16px减少到14px */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.confirm-btn {
+  background-color: #2196F3;
+  color: white;
+}
+
+.confirm-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.confirm-btn:not(:disabled):hover {
+  background-color: #1976D2;
+}
+
+.cancel-btn {
+  background-color: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.cancel-btn:hover {
+  background-color: #e0e0e0;
+} 

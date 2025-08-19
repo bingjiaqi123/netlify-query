@@ -1,0 +1,25 @@
+{
+  "pages": {
+    "food": {
+      "path": "pages/food/food",
+      "style": {
+        "navigationBarTitleText": "餐饮系统",
+        "navigationStyle": "custom"
+      }
+    },
+    "warehouse": {
+      "path": "pages/warehouse/warehouse",
+      "style": {
+        "navigationBarTitleText": "查看仓库",
+        "navigationStyle": "custom"
+      }
+    },
+    "cooking": {
+      "path": "pages/cooking/cooking",
+      "style": {
+        "navigationBarTitleText": "自己下厨",
+        "navigationStyle": "custom"
+      }
+    }
+  }
+} 

@@ -1,0 +1,203 @@
+<view class="achievement-container">
+  <!-- 第一行：返回按钮和我是家长按钮 -->
+  <view class="top-row">
+    <button class="back-btn" bindtap="goBack">返回</button>
+    <button class="parent-btn {{isParentMode ? 'active' : ''}}" bindtap="toggleMode">{{isParentMode ? '👨‍👩‍👧‍👦' : '我是家长'}}</button>
+  </view>
+
+  <!-- 学生模式：显示成就列表 -->
+  <view class="student-mode" wx:if="{{!isParentMode}}">
+    <!-- 第二行：两个标签页 -->
+    <view class="tabs">
+      <text class="tab {{activeSub==='available'?'active':''}}" data-sub="available" bindtap="switchSub">未达成</text>
+      <text class="tab {{activeSub==='ongoing'?'active':''}}" data-sub="ongoing" bindtap="switchSub">已达成</text>
+    </view>
+
+    <!-- 成就列表 -->
+    <view class="list">
+      <block wx:for="{{visibleTasks}}" wx:key="id">
+        <view class="task {{item.status==='pending-review'?'pending':''}}">
+          <view class="task-content">
+            <text class="title">{{item.achievementId ? ('[' + item.achievementId + '] ') : ''}}{{item.title}}</text>
+            <view class="desc-container">
+              <text class="desc">{{item.desc}}</text>
+            </view>
+            <view class="rewards">
+              <view wx:if="{{item.hasCoin}}" class="reward coin"><image src="../../images/coin.png" class="reward-icon" />{{item.coin}}</view>
+              <view wx:if="{{item.hasDiamond}}" class="reward diamond"><image src="../../images/diamond.png" class="reward-icon" />{{item.diamond}}</view>
+              <text wx:if="{{item.hasCustom}}" class="reward custom">{{item.custom}}</text>
+            </view>
+            <text wx:if="{{activeSub==='ongoing' && item.submitTimeText}}" class="task-time">提交时间：{{item.submitTimeText}}</text>
+          </view>
+          <view class="task-actions">
+            <block wx:if="{{activeSub==='available'}}">
+              <button class="submit" data-id="{{item.id}}" bindtap="submitTask">提交</button>
+            </block>
+            <block wx:elif="{{activeSub==='ongoing'}}">
+              <block wx:if="{{item.status==='pending-review'}}">
+                <text class="waiting">正在等待审核…</text>
+              </block>
+            </block>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 家长模式：显示成就管理 -->
+  <view class="parent-mode" wx:if="{{isParentMode}}">
+    <!-- 发布成就按钮和管理现有成就标题 -->
+    <view class="top-section">
+      <view class="section-title">管理现有成就</view>
+      <button class="publish-achievement-btn" bindtap="showPublishPanel"><text class="btn-text">发布成就</text></button>
+    </view>
+
+    <!-- 成就：分成两部分显示 -->
+    <view>
+      <!-- 已提交待审核的成就 -->
+      <view class="section-title">已提交待审核</view>
+      <view class="task-list">
+        <block wx:for="{{pendingReviewTasks}}" wx:key="id">
+          <view class="manage-task-card">
+            <view class="task-content">
+              <view class="task-header">
+                <text class="task-title">{{item.achievementId ? ('[' + item.achievementId + '] ') : ''}}{{item.title}}</text>
+              </view>
+              <view class="task-desc">{{item.desc}}</view>
+              <view class="task-meta">
+                <view class="task-rewards">
+                  <view wx:if="{{item.hasCoin}}" class="reward coin"><image src="../../images/coin.png" class="reward-icon" />{{item.coin}}</view>
+                  <view wx:if="{{item.hasDiamond}}" class="reward diamond"><image src="../../images/diamond.png" class="reward-icon" />{{item.diamond}}</view>
+                  <text wx:if="{{item.hasCustom}}" class="reward custom">{{item.custom}}</text>
+                </view>
+              </view>
+              <view class="task-time-row" wx:if="{{item.submitTimeText}}">
+                <text class="task-time">{{item.submitTimeText ? '提交时间：' + item.submitTimeText : ''}}</text>
+              </view>
+            </view>
+            <view class="task-actions">
+              <view class="review-row">
+                <button class="approve-round" data-id="{{item.id}}" bindtap="approveTask">👍</button>
+              </view>
+              <view class="review-row">
+                <input class="score-input" type="number" placeholder="100" data-id="{{item.id}}" bindinput="onScoreInput"/>
+              </view>
+            </view>
+          </view>
+        </block>
+        <view wx:if="{{!pendingReviewTasks || pendingReviewTasks.length === 0}}" class="empty-tip">暂无待审核成就</view>
+      </view>
+
+      <!-- 未提交的成就 -->
+      <view class="section-title">未提交成就</view>
+      <view class="task-list">
+        <block wx:for="{{availableTasks}}" wx:key="id">
+          <view class="manage-task-card">
+            <view class="task-content">
+              <view class="task-header">
+                <text class="task-title">{{item.achievementId ? ('[' + item.achievementId + '] ') : ''}}{{item.title}}</text>
+              </view>
+              <view class="task-desc">{{item.desc}}</view>
+              <view class="task-meta">
+                <view class="task-rewards">
+                  <view wx:if="{{item.hasCoin}}" class="reward coin"><image src="../../images/coin.png" class="reward-icon" />{{item.coin}}</view>
+                  <view wx:if="{{item.hasDiamond}}" class="reward diamond"><image src="../../images/diamond.png" class="reward-icon" />{{item.diamond}}</view>
+                  <text wx:if="{{item.hasCustom}}" class="reward custom">{{item.custom}}</text>
+                </view>
+              </view>
+              <view class="task-time-row" wx:if="{{item.publishTimeText}}">
+                <text class="task-time">{{'发布时间：' + item.publishTimeText}}</text>
+              </view>
+            </view>
+            <view class="task-actions">
+              <button class="delete-btn" data-id="{{item.id}}" bindtap="deleteTask">🗑️</button>
+            </view>
+          </view>
+        </block>
+        <view wx:if="{{!availableTasks || availableTasks.length === 0}}" class="empty-tip">暂无未提交成就</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 发布成就面板 -->
+  <view class="publish-panel" wx:if="{{showPublishPanel}}" catchtap="hidePublishPanel">
+    <view class="publish-content" catchtap="stopPropagation">
+      <view class="publish-header">
+        <text class="publish-title">发布成就</text>
+        <text class="close-btn" bindtap="hidePublishPanel">×</text>
+      </view>
+      
+      <view class="publish-body">
+        <!-- 成就ID输入 -->
+        <view class="input-group">
+          <label class="input-label">成就ID：</label>
+          <input 
+            class="title-input" 
+            value="{{draft.achievementId}}"
+            bindinput="onAchievementIdInput"
+          />
+        </view>
+
+        <!-- 成就信息展示区域 -->
+        <view class="achievement-info" wx:if="{{draft.title}}">
+          <!-- 成就标题 -->
+          <view class="info-section">
+            <label class="info-label">成就标题：</label>
+            <text class="info-value">{{draft.title}}</text>
+          </view>
+
+          <!-- 铜币奖励 -->
+          <view class="info-section" wx:if="{{draft.hasCoin}}">
+            <label class="info-label">铜币奖励：</label>
+            <text class="info-value coin-value">{{draft.coin}} 铜币</text>
+          </view>
+
+          <!-- 钻石奖励 -->
+          <view class="info-section" wx:if="{{draft.hasDiamond}}">
+            <label class="info-label">钻石奖励：</label>
+            <text class="info-value diamond-value">{{draft.diamond}} 钻石</text>
+          </view>
+        </view>
+
+        <!-- 成就描述 -->
+        <view class="input-group">
+          <label class="input-label">成就描述：</label>
+          <textarea 
+            class="desc-input" 
+            value="{{draft.desc}}"
+            bindinput="onDraftDesc"
+          />
+        </view>
+
+        <!-- 自定义奖励 -->
+        <view class="custom-reward-section">
+          <view class="custom-reward-header">
+            <label class="custom-reward-label">自定义奖励：</label>
+            <switch 
+              checked="{{draft.hasCustom}}" 
+              bindchange="toggleCustomReward"
+              color="#007aff"
+            />
+          </view>
+          
+          <view class="custom-reward-content" wx:if="{{draft.hasCustom}}">
+            <textarea 
+              class="custom-input" 
+              placeholder="请输入自定义奖励内容" 
+              value="{{draft.custom}}"
+              bindinput="onCustomInput"
+            />
+          </view>
+        </view>
+      </view>
+      
+      <view class="publish-footer">
+        <button class="cancel-btn" bindtap="hidePublishPanel">取消</button>
+        <button class="publish-btn" bindtap="publishTask" disabled="{{!draft.title}}">发布</button>
+      </view>
+    </view>
+  </view>
+
+
+
+</view> 

@@ -1,0 +1,75 @@
+<!--pages/warehouse/warehouse.wxml-->
+<view class="container">
+  <!-- 顶部标题和返回按钮 -->
+  <view class="header">
+    <button class="back-btn" bindtap="goBack">返回</button>
+    <text class="page-title">查看仓库</text>
+  </view>
+
+  <!-- 存储区域按钮 -->
+  <view class="storage-options">
+    <button class="storage-btn" bindtap="showColdStorage">
+      <text class="btn-text">冷藏</text>
+    </button>
+    <button class="storage-btn" bindtap="showFrozenStorage">
+      <text class="btn-text">冷冻</text>
+    </button>
+    <button class="storage-btn" bindtap="showDryStorage">
+      <text class="btn-text">储存</text>
+    </button>
+  </view>
+</view>
+
+<!-- 冷藏窗口 -->
+<view class="modal {{showColdStorage ? 'show' : ''}}" wx:if="{{showColdStorage}}" bindtap="closeModal">
+  <view class="modal-content" catchtap="stopPropagation">
+    <view class="modal-header">
+      <text class="modal-title">冷藏室</text>
+      <button class="close-btn" bindtap="closeModal">×</button>
+    </view>
+    <view class="grid-container">
+      <view class="grid">
+        <view class="grid-item {{item ? 'has-item' : ''}}" wx:for="{{coldStorageGrid}}" wx:key="index" wx:for-item="item">
+          <text wx:if="{{item}}" class="item-name">{{item.name}}</text>
+          <text wx:if="{{item}}" class="item-amount">{{item.amount}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 冷冻窗口 -->
+<view class="modal {{showFrozenStorage ? 'show' : ''}}" wx:if="{{showFrozenStorage}}" bindtap="closeModal">
+  <view class="modal-content" catchtap="stopPropagation">
+    <view class="modal-header">
+      <text class="modal-title">冷冻室</text>
+      <button class="close-btn" bindtap="closeModal">×</button>
+    </view>
+    <view class="grid-container">
+      <view class="grid">
+        <view class="grid-item {{item ? 'has-item' : ''}}" wx:for="{{frozenStorageGrid}}" wx:key="index" wx:for-item="item">
+          <text wx:if="{{item}}" class="item-name">{{item.name}}</text>
+          <text wx:if="{{item}}" class="item-amount">{{item.amount}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 储存窗口 -->
+<view class="modal {{showDryStorage ? 'show' : ''}}" wx:if="{{showDryStorage}}" bindtap="closeModal">
+  <view class="modal-content" catchtap="stopPropagation">
+    <view class="modal-header">
+      <text class="modal-title">储存室</text>
+      <button class="close-btn" bindtap="closeModal">×</button>
+    </view>
+    <view class="grid-container">
+      <view class="grid">
+        <view class="grid-item {{item ? 'has-item' : ''}}" wx:for="{{dryStorageGrid}}" wx:key="index" wx:for-item="item">
+          <text wx:if="{{item}}" class="item-name">{{item.name}}</text>
+          <text wx:if="{{item}}" class="item-amount">{{item.amount}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view> 

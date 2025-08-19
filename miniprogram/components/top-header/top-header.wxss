@@ -1,0 +1,4 @@
+.safe-header{height:80rpx;width:100%}
+.header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20rpx;padding:0 24rpx;width:100%;box-sizing:border-box}
+.header-row .right{display:flex;align-items:center;gap:12rpx}
+.back-btn{background:#007aff;color:#fff;border:none;border-radius:8rpx;padding:8rpx 16rpx;font-size:24rpx} 

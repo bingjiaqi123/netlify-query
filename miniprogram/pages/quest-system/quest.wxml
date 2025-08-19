@@ -1,0 +1,559 @@
+<view class="quest-container">
+  <!-- 第一行：返回按钮和我是家长按钮 -->
+  <view class="top-row">
+    <button class="back-btn" bindtap="goBack">返回</button>
+    <button class="parent-btn {{isParentMode ? 'active' : ''}}" bindtap="toggleMode">{{isParentMode ? '👨‍👩‍👧‍👦' : '我是家长'}}</button>
+  </view>
+
+  <!-- 学生模式：显示任务列表 -->
+  <view class="student-mode" wx:if="{{!isParentMode}}">
+    <!-- 第二行：三个标签页 -->
+    <view class="tabs-container">
+      <view class="tabs">
+        <view class="tab {{activeTab==='daily'?'active':''}}" data-tab="daily" bindtap="switchTab">
+          <image class="redraw-btn" src="../../images/rechoose.png" 
+                 data-tip="{{canRedrawDaily ? '点击重抽每日任务' : '今日重抽次数已用完'}}"
+                 data-disabled="{{!canRedrawDaily}}"
+                 catchtap="redrawDailyTasks" />
+          <text>每日任务</text>
+        </view>
+        <view class="tab {{activeTab==='weekly'?'active':''}}" data-tab="weekly" bindtap="switchTab">
+          <image class="redraw-btn" src="../../images/rechoose.png" 
+                 data-tip="{{canRedrawWeekly ? '点击重抽每周任务' : '本周重抽次数已用完'}}"
+                 data-disabled="{{!canRedrawWeekly}}"
+                 catchtap="redrawWeeklyTasks" />
+          <text>每周任务</text>
+      </view>
+      <text class="tab {{activeTab==='event'?'active':''}}" data-tab="event" bindtap="switchTab">活动任务</text>
+      </view>
+    </view>
+
+    <!-- 横幅区域 -->
+    <view class="banner-container" wx:if="{{activeTab==='daily'}}">
+      <view class="daily-banner">
+        <view class="banner-icon">
+          <view class="date-box">{{dailyBanner.date}}</view>
+        </view>
+        <view class="banner-content">
+          <text class="banner-quote">{{dailyBanner.quote}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="banner-container" wx:if="{{activeTab==='weekly'}}">
+      <view class="weekly-banner">
+        <view class="banner-icon">
+          <image src="{{'../../images/week/' + weeklyBanner.weekdayIcon}}" class="weekday-icon" mode="aspectFit" />
+        </view>
+        <view class="banner-content">
+          <text class="banner-quote">{{weeklyBanner.quote}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 每日任务和每周任务：显示任务池按钮和任务列表 -->
+    <view wx:if="{{activeTab==='daily' || activeTab==='weekly'}}">
+      
+      <!-- 任务列表 -->
+      <view class="list">
+      <block wx:for="{{visibleTasks}}" wx:key="id">
+        <view class="task {{item.status==='pending-review'?'pending':''}}">
+          <view class="task-content">
+            <text class="title">{{item.title}}</text>
+            <view class="desc-container">
+              <text class="desc">{{item.desc}}</text>
+            </view>
+            <view class="rewards">
+              <view wx:if="{{item.hasCoin}}" class="reward coin"><image src="../../images/coin.png" class="reward-icon" />{{item.coin}}</view>
+              <view wx:if="{{item.hasDiamond}}" class="reward diamond"><image src="../../images/diamond.png" class="reward-icon" />{{item.diamond}}</view>
+              <text wx:if="{{item.hasCustom}}" class="reward custom">{{item.custom}}</text>
+            </view>
+          </view>
+          <view class="task-actions">
+            <block wx:if="{{item.status==='pending-review'}}">
+              <text class="waiting">正在等待审核…</text>
+            </block>
+            <block wx:else>
+              <button class="submit" data-id="{{item.id}}" bindtap="submitTask">提交</button>
+            </block>
+          </view>
+        </view>
+      </block>
+    </view>
+    </view>
+
+    <!-- 活动：保持原有的接取、进行中流程 -->
+    <view wx:if="{{activeTab==='event'}}">
+      <view class="subtabs">
+        <button class="subtab {{activeSub==='available'?'active':''}}" data-sub="available" bindtap="switchSub">待接取</button>
+        <button class="subtab {{activeSub==='ongoing'?'active':''}}" data-sub="ongoing" bindtap="switchSub">进行中</button>
+      </view>
+
+      <view class="list">
+        <block wx:for="{{visibleTasks}}" wx:key="id">
+          <view class="task {{item.status==='pending-review'?'pending':''}}">
+            <view class="task-content">
+              <text class="title">{{item.title}}</text>
+              <view class="desc-container">
+                <text class="desc">{{item.desc}}</text>
+              </view>
+              <view class="rewards">
+                <view wx:if="{{item.hasCoin}}" class="reward coin"><image src="../../images/coin.png" class="reward-icon" />{{item.coin}}</view>
+                <view wx:if="{{item.hasDiamond}}" class="reward diamond"><image src="../../images/diamond.png" class="reward-icon" />{{item.diamond}}</view>
+                <text wx:if="{{item.hasCustom}}" class="reward custom">{{item.custom}}</text>
+              </view>
+              <text wx:if="{{activeSub==='ongoing' && item.acceptTimeText}}" class="task-time">接取时间：{{item.acceptTimeText}}</text>
+            </view>
+            <view class="task-actions">
+              <block wx:if="{{activeSub==='available'}}">
+                <button class="accept" data-id="{{item.id}}" bindtap="acceptTask">接取</button>
+              </block>
+              <block wx:elif="{{activeSub==='ongoing'}}">
+                <block wx:if="{{item.status==='pending-review'}}">
+                  <text class="waiting">正在等待审核…</text>
+                </block>
+                <block wx:else>
+                  <button class="submit" data-id="{{item.id}}" bindtap="submitTask">提交</button>
+                  <button class="abandon" data-id="{{item.id}}" bindtap="abandonTask">放弃</button>
+                </block>
+              </block>
+            </view>
+          </view>
+        </block>
+      </view>
+    </view>
+  </view>
+
+  <!-- 家长模式：显示任务管理 -->
+  <view class="parent-mode" wx:if="{{isParentMode}}">
+    <!-- 三个子页面标签 -->
+    <view class="tabs">
+      <text class="tab {{activeTab==='daily'?'active':''}}" data-tab="daily" bindtap="switchParentTab">每日任务</text>
+      <text class="tab {{activeTab==='weekly'?'active':''}}" data-tab="weekly" bindtap="switchParentTab">每周任务</text>
+      <text class="tab {{activeTab==='event'?'active':''}}" data-tab="event" bindtap="switchParentTab">活动任务</text>
+    </view>
+
+    <!-- 横幅区域 -->
+    <view class="banner-container" wx:if="{{activeTab==='daily'}}">
+      <view class="daily-banner">
+        <view class="banner-icon">
+          <view class="date-box">{{dailyBanner.date}}</view>
+        </view>
+        <view class="banner-content">
+          <text class="banner-quote">{{dailyBanner.quote}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="banner-container" wx:if="{{activeTab==='weekly'}}">
+      <view class="weekly-banner">
+        <view class="banner-icon">
+          <image src="{{'../../images/week/' + weeklyBanner.weekdayIcon}}" class="weekday-icon" mode="aspectFit" />
+        </view>
+        <view class="banner-content">
+          <text class="banner-quote">{{weeklyBanner.quote}}</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 任务池选择 -->
+    <view class="pool-selector" wx:if="{{activeTab==='daily' || activeTab==='weekly'}}">
+      <view class="pool-tabs">
+        <view class="pool-tab {{activePool==='permanent' ? 'active' : ''}}" data-pool="permanent" bindtap="navigateToPermanentPool">
+          <text>常驻任务池</text>
+        </view>
+        <view class="pool-tab {{activePool==='random' ? 'active' : ''}}" data-pool="random" bindtap="navigateToRandomPool">
+          <text>随机任务池</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 每日任务和每周任务：分成两部分显示 -->
+    <view wx:if="{{activeTab==='daily' || activeTab==='weekly'}}">
+      <!-- 已提交待审核标题和发布任务按钮 -->
+      <view class="header-row">
+        <text class="section-title">已提交待审核</text>
+        <button class="publish-task-btn" bindtap="showPublishPanel">发布任务</button>
+      </view>
+      
+      <!-- 已提交待审核的任务 -->
+      <view class="task-list">
+        <block wx:for="{{pendingReviewTasks}}" wx:key="id">
+          <view class="manage-task-card">
+            <view class="task-content">
+              <view class="task-header">
+                <text class="task-title">{{item.title}}</text>
+              </view>
+              <view class="task-desc">{{item.desc}}</view>
+              <view class="task-meta">
+                <view class="task-rewards">
+                  <view wx:if="{{item.hasCoin}}" class="reward coin"><image src="../../images/coin.png" class="reward-icon" />{{item.coin}}</view>
+                  <view wx:if="{{item.hasDiamond}}" class="reward diamond"><image src="../../images/diamond.png" class="reward-icon" />{{item.diamond}}</view>
+                  <text wx:if="{{item.hasCustom}}" class="reward custom">{{item.custom}}</text>
+                </view>
+              </view>
+              <view class="task-time-row" wx:if="{{item.submitTimeText}}">
+                <text class="task-time">{{'提交时间：' + item.submitTimeText}}</text>
+              </view>
+            </view>
+            <view class="task-actions">
+              <view class="review-row">
+                <button class="approve-round" data-id="{{item.id}}" bindtap="approveTask">👍</button>
+              </view>
+              <view class="review-row">
+                <input class="score-input" type="number" placeholder="100" data-id="{{item.id}}" bindinput="onScoreInput"/>
+              </view>
+            </view>
+          </view>
+        </block>
+        <view wx:if="{{!pendingReviewTasks || pendingReviewTasks.length === 0}}" class="empty-tip">暂无待审核任务</view>
+      </view>
+    </view>
+
+    <!-- 成就：分成两部分显示 -->
+    <view wx:if="{{activeTab==='achieve'}}">
+      <!-- 已提交待审核的成就 -->
+      <view class="section-title">已提交待审核</view>
+      <view class="task-list">
+        <block wx:for="{{pendingReviewTasks}}" wx:key="id">
+          <view class="manage-task-card">
+            <view class="task-content">
+              <view class="task-header">
+                <text class="task-title">{{item.title}}</text>
+              </view>
+              <view class="task-desc">{{item.desc}}</view>
+              <view class="task-meta">
+                <view class="task-rewards">
+                  <view wx:if="{{item.hasCoin}}" class="reward coin"><image src="../../images/coin.png" class="reward-icon" />{{item.coin}}</view>
+                  <view wx:if="{{item.hasDiamond}}" class="reward diamond"><image src="../../images/diamond.png" class="reward-icon" />{{item.diamond}}</view>
+                  <text wx:if="{{item.hasCustom}}" class="reward custom">{{item.custom}}</text>
+                </view>
+              </view>
+              <view class="task-time-row" wx:if="{{item.submitTimeText}}">
+                <text class="task-time">{{'提交时间：' + item.submitTimeText}}</text>
+              </view>
+            </view>
+            <view class="task-actions">
+              <view class="review-row">
+                <button class="approve-round" data-id="{{item.id}}" bindtap="approveTask">👍</button>
+              </view>
+              <view class="review-row">
+                <input class="score-input" type="number" placeholder="100" data-id="{{item.id}}" bindinput="onScoreInput"/>
+              </view>
+            </view>
+          </view>
+        </block>
+        <view wx:if="{{!pendingReviewTasks || pendingReviewTasks.length === 0}}" class="empty-tip">暂无待审核成就</view>
+      </view>
+
+      <!-- 未提交的成就 -->
+      <view class="section-title">未提交成就</view>
+      <view class="task-list">
+        <block wx:for="{{availableTasks}}" wx:key="id">
+          <view class="manage-task-card">
+            <view class="task-content">
+              <view class="task-header">
+                <text class="task-title">{{item.title}}</text>
+              </view>
+              <view class="task-desc">{{item.desc}}</view>
+              <view class="task-meta">
+                <view class="task-rewards">
+                  <view wx:if="{{item.hasCoin}}" class="reward coin"><image src="../../images/coin.png" class="reward-icon" />{{item.coin}}</view>
+                  <view wx:if="{{item.hasDiamond}}" class="reward diamond"><image src="../../images/diamond.png" class="reward-icon" />{{item.diamond}}</view>
+                  <text wx:if="{{item.hasCustom}}" class="reward custom">{{item.custom}}</text>
+                </view>
+              </view>
+              <view class="task-time-row" wx:if="{{item.publishTimeText}}">
+                <text class="task-time">{{'发布时间：' + item.publishTimeText}}</text>
+              </view>
+            </view>
+            <view class="task-actions">
+              <button class="delete-btn" data-id="{{item.id}}" bindtap="deleteTask">🗑️</button>
+            </view>
+          </view>
+        </block>
+        <view wx:if="{{!availableTasks || availableTasks.length === 0}}" class="empty-tip">暂无未提交成就</view>
+      </view>
+    </view>
+
+    <!-- 活动：保持原有的显示方式 -->
+    <view wx:if="{{activeTab==='event'}}">
+      <!-- 管理现有任务标题和发布任务按钮 -->
+      <view class="header-row">
+        <text class="section-title">管理现有任务</text>
+        <button class="publish-task-btn" bindtap="showPublishPanel">发布任务</button>
+      </view>
+      
+      <view class="task-list">
+        <block wx:for="{{manageTasks}}" wx:key="id">
+          <view class="manage-task-card">
+            <view class="task-content">
+              <view class="task-header">
+                <text class="task-title">{{item.title}}</text>
+                <text class="task-status {{item.status}}">{{item.status === 'pending-review' ? '待审核' : item.status === 'approved' ? '已通过' : item.status === 'ongoing' ? '进行中' : '待接取'}}</text>
+              </view>
+              <view class="task-desc">{{item.desc}}</view>
+              <view class="task-meta">
+                <view class="task-rewards">
+                  <view wx:if="{{item.hasCoin}}" class="reward coin"><image src="../../images/coin.png" class="reward-icon" />{{item.coin}}</view>
+                  <view wx:if="{{item.hasDiamond}}" class="reward diamond"><image src="../../images/diamond.png" class="reward-icon" />{{item.diamond}}</view>
+                  <text wx:if="{{item.hasCustom}}" class="reward custom">{{item.custom}}</text>
+                </view>
+              </view>
+              <view class="task-time-row" wx:if="{{item.publishTimeText}}">
+                <text class="task-time">{{'发布时间：' + item.publishTimeText}}</text>
+              </view>
+            </view>
+            <view class="task-actions">
+              <block wx:if="{{item.status === 'pending-review'}}">
+                <view class="review-row">
+                  <button class="approve-round" data-id="{{item.id}}" bindtap="approveTask">👍</button>
+                </view>
+                <view class="review-row">
+                  <input class="score-input" type="number" placeholder="100" data-id="{{item.id}}" bindinput="onScoreInput"/>
+                </view>
+              </block>
+              <block wx:else>
+                <button class="edit-btn" data-id="{{item.id}}" bindtap="editTask">🖊️</button>
+                <button class="delete-btn" data-id="{{item.id}}" bindtap="deleteTask">🗑️</button>
+              </block>
+            </view>
+          </view>
+        </block>
+        <view wx:if="{{!manageTasks || manageTasks.length === 0}}" class="empty-tip">暂无任务</view>
+      </view>
+    </view>
+    </view>
+
+  <!-- 发布任务面板 -->
+  <view class="publish-panel {{showPublishPanel ? 'show' : ''}}" wx:if="{{showPublishPanel}}" catchtouchmove>
+    <view class="panel-content">
+      <view class="panel-header">
+        <text class="panel-title">发布任务</text>
+        <view class="header-actions">
+          <button class="cancel-btn" bindtap="hidePublishPanel">取消</button>
+          <button class="publish-btn" bindtap="publishTask">发布</button>
+        </view>
+      </view>
+      
+      <view class="input-group">
+        <!-- 每日任务ID输入和任务类型开关（仅每日任务显示） -->
+        <view class="input-section" wx:if="{{activeTab==='daily'}}">
+          <view class="id-switch-row">
+            <view class="id-input-group">
+              <text class="section-label">每日任务ID</text>
+              <input class="title-input" value="{{draft.dailyTaskId}}" bindinput="onDailyTaskIdInput" />
+            </view>
+            <view class="switch-group">
+              <text class="switch-label">任务类型</text>
+              <view class="custom-switch">
+                <text class="switch-option {{!draft.isPermanent ? 'active' : ''}}" bindtap="setRandom">随机</text>
+                <text class="switch-option {{draft.isPermanent ? 'active' : ''}}" bindtap="setPermanent">常驻</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 每周任务ID输入和任务类型开关（仅每周任务显示） -->
+        <view class="input-section" wx:if="{{activeTab==='weekly'}}">
+          <view class="id-switch-row">
+            <view class="id-input-group">
+              <text class="section-label">每周任务ID</text>
+              <input class="title-input" value="{{draft.weeklyTaskId}}" bindinput="onWeeklyTaskIdInput" />
+            </view>
+            <view class="switch-group">
+              <text class="switch-label">任务类型</text>
+              <view class="custom-switch">
+                <text class="switch-option {{!draft.isPermanent ? 'active' : ''}}" bindtap="setRandom">随机</text>
+                <text class="switch-option {{draft.isPermanent ? 'active' : ''}}" bindtap="setPermanent">常驻</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 活动任务ID输入（仅活动任务显示） -->
+        <view class="input-section" wx:if="{{activeTab==='event'}}">
+          <text class="section-label">活动任务ID</text>
+          <input class="title-input" value="{{draft.activityId}}" bindinput="onActivityTaskIdInput" />
+        </view>
+
+        <!-- 每日任务信息展示区域（仅每日任务显示） -->
+        <view class="daily-task-info" wx:if="{{activeTab==='daily' && draft.title}}">
+          <!-- 任务标题 -->
+          <view class="info-section">
+            <label class="info-label">任务标题：</label>
+            <text class="info-value">{{draft.title}}</text>
+          </view>
+
+          <!-- 铜币奖励 -->
+          <view class="info-section" wx:if="{{draft.hasCoin}}">
+            <label class="info-label">铜币奖励：</label>
+            <text class="info-value coin-value">{{draft.coin}} 铜币</text>
+          </view>
+
+          <!-- 钻石奖励 -->
+          <view class="info-section" wx:if="{{draft.hasDiamond}}">
+            <label class="info-label">钻石奖励：</label>
+            <text class="info-value diamond-value">{{draft.diamond}} 钻石</text>
+          </view>
+        </view>
+
+        <!-- 每周任务信息展示区域（仅每周任务显示） -->
+        <view class="weekly-task-info" wx:if="{{activeTab==='weekly' && draft.title}}">
+          <!-- 任务标题 -->
+          <view class="info-section">
+            <label class="info-label">任务标题：</label>
+            <text class="info-value">{{draft.title}}</text>
+          </view>
+
+          <!-- 铜币奖励 -->
+          <view class="info-section" wx:if="{{draft.hasCoin}}">
+            <label class="info-label">铜币奖励：</label>
+            <text class="info-value coin-value">{{draft.coin}} 铜币</text>
+          </view>
+
+          <!-- 钻石奖励 -->
+          <view class="info-section" wx:if="{{draft.hasDiamond}}">
+            <label class="info-label">钻石奖励：</label>
+            <text class="info-value diamond-value">{{draft.diamond}} 钻石</text>
+          </view>
+        </view>
+
+        <!-- 活动任务信息展示区域（仅活动任务显示） -->
+        <view class="activity-task-info" wx:if="{{activeTab==='event' && draft.title}}">
+          <!-- 任务标题 -->
+          <view class="info-section">
+            <label class="info-label">任务标题：</label>
+            <text class="info-value">{{draft.title}}</text>
+          </view>
+
+          <!-- 铜币奖励 -->
+          <view class="info-section" wx:if="{{draft.hasCoin}}">
+            <label class="info-label">铜币奖励：</label>
+            <text class="info-value coin-value">{{draft.coin}} 铜币</text>
+          </view>
+
+          <!-- 钻石奖励 -->
+          <view class="info-section" wx:if="{{draft.hasDiamond}}">
+            <label class="info-label">钻石奖励：</label>
+            <text class="info-value diamond-value">{{draft.diamond}} 钻石</text>
+          </view>
+        </view>
+
+        <!-- 任务标题（每日/每周任务时手动输入，仅在没有匹配到任务时显示） -->
+        <view class="input-section" wx:if="{{(activeTab==='daily' || activeTab==='weekly') && !draft.title}}">
+          <text class="section-label">任务标题</text>
+          <input class="title-input" value="{{draft.title}}" bindinput="onDraftTitle" />
+        </view>
+        
+        <!-- 任务描述 -->
+        <view class="input-section">
+          <text class="section-label">任务描述</text>
+          <textarea class="desc-textarea" value="{{draft.desc}}" bindinput="onDraftDesc"></textarea>
+        </view>
+        
+        <!-- 每日/每周任务自定义奖励（使用开关样式） -->
+        <view class="custom-reward-section" wx:if="{{activeTab==='daily' || activeTab==='weekly'}}">
+          <view class="custom-reward-header">
+            <label class="custom-reward-label">自定义奖励：</label>
+            <switch 
+              checked="{{draft.hasCustom}}" 
+              bindchange="toggleCustomReward"
+              color="#007aff"
+            />
+          </view>
+          
+          <view class="custom-reward-content" wx:if="{{draft.hasCustom}}">
+            <textarea 
+              class="custom-textarea" 
+              value="{{draft.custom}}" 
+              bindinput="onCustomInput"
+            />
+          </view>
+        </view>
+        
+        <!-- 活动任务自定义奖励（使用开关样式） -->
+        <view class="custom-reward-section" wx:if="{{activeTab==='event'}}">
+          <view class="custom-reward-header">
+            <label class="custom-reward-label">自定义奖励：</label>
+            <switch 
+              checked="{{draft.hasCustom}}" 
+              bindchange="toggleCustomReward"
+              color="#007aff"
+            />
+          </view>
+          
+          <view class="custom-reward-content" wx:if="{{draft.hasCustom}}">
+            <textarea 
+              class="custom-textarea" 
+              value="{{draft.custom}}" 
+              bindinput="onCustomInput"
+            />
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 编辑任务面板 -->
+  <view class="publish-panel {{showEditPanel ? 'show' : ''}}" wx:if="{{showEditPanel}}" catchtouchmove>
+    <view class="panel-content">
+      <view class="panel-header">
+        <text class="panel-title">编辑任务</text>
+        <view class="header-actions">
+          <button class="cancel-btn" bindtap="hideEditPanel">取消</button>
+          <button class="publish-btn" bindtap="updateTask">更新</button>
+        </view>
+      </view>
+      
+      <view class="input-group">
+        <!-- 任务标题 -->
+        <view class="input-section">
+          <text class="section-label">任务标题</text>
+          <input class="title-input" value="{{editDraft.title}}" bindinput="onEditDraftTitle" />
+        </view>
+        
+        <!-- 任务描述 -->
+        <view class="input-section">
+          <text class="section-label">任务描述</text>
+          <textarea class="desc-textarea" value="{{editDraft.desc}}" bindinput="onEditDraftDesc"></textarea>
+        </view>
+        
+        <!-- 奖励设置标题 -->
+        <view class="reward-title-row">
+          <text class="reward-title">奖励设置</text>
+        </view>
+        
+        <!-- 铜钱设置 -->
+        <view class="reward-setting-row">
+          <view class="check-box {{editDraft.hasCoin ? 'checked' : ''}}" data-type="coin" bindtap="toggleEditCoinReward"><text class="tick" wx:if="{{editDraft.hasCoin}}">√</text></view>
+          <image src="../../images/coin.png" class="reward-icon" />
+          <input class="reward-number-input" type="number" value="{{editDraft.coin}}" data-type="coin" bindinput="onEditRewardInput" />
+          <button class="reward-btn minus" data-type="coin" bindtap="decreaseEditReward">➖</button>
+          <button class="reward-btn plus" data-type="coin" bindtap="increaseEditReward">➕</button>
+        </view>
+        
+        <!-- 钻石设置 -->
+        <view class="reward-setting-row">
+          <view class="check-box {{editDraft.hasDiamond ? 'checked' : ''}}" data-type="diamond" bindtap="toggleEditDiamondReward"><text class="tick" wx:if="{{editDraft.hasDiamond}}">√</text></view>
+          <image src="../../images/diamond.png" class="reward-icon" />
+          <input class="reward-number-input" type="number" value="{{editDraft.diamond}}" data-type="diamond" bindinput="onEditRewardInput" />
+          <button class="reward-btn minus" data-type="diamond" bindtap="decreaseEditReward">➖</button>
+          <button class="reward-btn plus" data-type="diamond" bindtap="increaseEditReward">➕</button>
+        </view>
+        
+        <!-- 自定义设置 -->
+        <view class="reward-setting-row">
+          <view class="check-box {{editDraft.hasCustom ? 'checked' : ''}}" data-type="custom" bindtap="toggleEditCustomReward"><text class="tick" wx:if="{{editDraft.hasCustom}}">√</text></view>
+          <text class="reward-label">自定义</text>
+        </view>
+        
+        <!-- 自定义输入框 -->
+        <view class="custom-input-section" wx:if="{{editDraft.hasCustom}}">
+          <textarea class="custom-textarea" value="{{editDraft.custom}}" bindinput="onEditCustomInput"></textarea>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</view> 

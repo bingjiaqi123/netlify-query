@@ -1,0 +1,484 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+    color: white;
+}
+
+header h1 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+header p {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+/* 标签页样式 */
+.tabs {
+    display: flex;
+    background: white;
+    border-radius: 10px;
+    padding: 6px;
+    margin-bottom: 15px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+    overflow-x: auto;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    min-width: 80px;
+}
+
+.tab-btn:hover {
+    background: #f0f0f0;
+    color: #333;
+}
+
+.tab-btn.active {
+    background: #667eea;
+    color: white;
+    box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+}
+
+/* 搜索框样式 */
+.search-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #e1e5e9;
+    border-radius: 10px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s ease;
+    background: white;
+}
+
+.search-input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.clear-btn {
+    padding: 12px 20px;
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.clear-btn:hover {
+    background: #ff5252;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(255, 107, 107, 0.3);
+}
+
+/* 内容区域 */
+.content {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tab-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #333;
+    border-bottom: 2px solid #667eea;
+    padding-bottom: 8px;
+}
+
+/* 列表样式 */
+.items-list {
+    display: grid;
+    gap: 12px;
+}
+
+.item-card {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 15px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.item-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    border-color: #667eea;
+}
+
+.item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.item-id {
+    background: #667eea;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+}
+
+.item-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 6px;
+}
+
+.item-desc {
+    color: #666;
+    line-height: 1.4;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.item-rewards {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.reward {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.reward.coin {
+    background: #fff3e0;
+    color: #ff9800;
+}
+
+.reward.diamond {
+    background: #e3f2fd;
+    color: #2196f3;
+}
+
+.reward-icon {
+    width: 14px;
+    height: 14px;
+}
+
+/* 统计信息 */
+.stats {
+    display: flex;
+    justify-content: space-between;
+    background: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+    font-weight: 600;
+    color: #666;
+    font-size: 14px;
+}
+
+/* 空状态 */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #999;
+}
+
+.empty-state h3 {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+}
+
+.empty-state p {
+    font-size: 1rem;
+}
+
+/* 响应式设计 - 手机端优先 */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    header h1 {
+        font-size: 1.6rem;
+    }
+    
+    header p {
+        font-size: 0.9rem;
+    }
+    
+    .tabs {
+        flex-direction: row;
+        gap: 2px;
+        padding: 4px;
+    }
+    
+    .tab-btn {
+        padding: 10px 12px;
+        font-size: 13px;
+        min-width: 60px;
+    }
+    
+    .search-container {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .search-input {
+        padding: 10px 14px;
+        font-size: 16px; /* 防止iOS缩放 */
+    }
+    
+    .clear-btn {
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+    
+    .content {
+        padding: 15px;
+    }
+    
+    .tab-content h2 {
+        font-size: 1.3rem;
+        margin-bottom: 12px;
+    }
+    
+    .item-card {
+        padding: 12px;
+    }
+    
+    .item-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+    
+    .item-title {
+        font-size: 15px;
+    }
+    
+    .item-desc {
+        font-size: 13px;
+    }
+    
+    .stats {
+        flex-direction: column;
+        gap: 6px;
+        text-align: center;
+        padding: 10px 16px;
+    }
+    
+    .stats span {
+        font-size: 13px;
+    }
+}
+
+/* 超小屏幕适配 */
+@media (max-width: 480px) {
+    .container {
+        padding: 8px;
+    }
+    
+    header h1 {
+        font-size: 1.4rem;
+    }
+    
+    .tabs {
+        gap: 1px;
+        padding: 3px;
+    }
+    
+    .tab-btn {
+        padding: 8px 10px;
+        font-size: 12px;
+        min-width: 50px;
+    }
+    
+    .content {
+        padding: 12px;
+    }
+    
+    .item-card {
+        padding: 10px;
+    }
+    
+    .item-title {
+        font-size: 14px;
+    }
+    
+    .item-desc {
+        font-size: 12px;
+    }
+}
+
+/* 平板端适配 */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        padding: 20px;
+    }
+    
+    .tabs {
+        gap: 4px;
+    }
+    
+    .tab-btn {
+        padding: 14px 20px;
+        font-size: 15px;
+    }
+    
+    .content {
+        padding: 25px;
+    }
+}
+
+/* 大屏幕优化 */
+@media (min-width: 1025px) {
+    .container {
+        padding: 25px;
+    }
+    
+    .items-list {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 16px;
+    }
+}
+
+/* 加载动画 */
+.loading {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+}
+
+.loading::after {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 8px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 触摸设备优化 */
+@media (hover: none) and (pointer: coarse) {
+    .item-card:hover {
+        transform: none;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .tab-btn:hover {
+        background: transparent;
+        color: #666;
+    }
+    
+    .clear-btn:hover {
+        transform: none;
+        box-shadow: 0 2px 6px rgba(255, 107, 107, 0.2);
+    }
+}
+
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+    .item-card {
+        border: 2px solid #000;
+    }
+    
+    .item-id {
+        background: #000;
+        color: #fff;
+    }
+    
+    .reward.coin {
+        background: #fff;
+        color: #000;
+        border: 1px solid #000;
+    }
+    
+    .reward.diamond {
+        background: #fff;
+        color: #000;
+        border: 1px solid #000;
+    }
+}
+
+/* 减少动画模式支持 */
+@media (prefers-reduced-motion: reduce) {
+    .item-card,
+    .tab-btn,
+    .clear-btn {
+        transition: none;
+    }
+    
+    .item-card:hover {
+        transform: none;
+    }
+    
+    .clear-btn:hover {
+        transform: none;
+    }
+} 

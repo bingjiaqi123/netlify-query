@@ -1,0 +1,392 @@
+.shop-container {
+  padding: 24rpx;
+  padding-top: 80rpx;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.shop-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+  padding: 20rpx;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16rpx;
+  backdrop-filter: blur(10rpx);
+}
+
+/* 顶部状态按钮行（与游戏页一致） */
+.status-row2{display:flex;gap:12rpx;align-items:center;margin-bottom:16rpx}
+.status-row2 .control-btn{flex:1;height:64rpx;line-height:64rpx;text-align:center;background:#263238;color:#fff;border:none;border-radius:8rpx;padding:0 0;font-size:28rpx}
+.status-row2 .info-btn{background:#1976d2}
+.status-row2 .bag-btn{background:#4caf50}
+.status-row2 .deck-btn{background:#ff9800}
+
+/* 小丑牌槽位样式（与游戏界面保持一致） */
+.joker-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.joker-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  min-height: 120rpx;
+}
+
+.joker-row-left {
+  justify-content: flex-start;
+}
+
+.joker-card-back {
+  width: 100rpx;
+  height: 109rpx;
+  background: transparent;
+  border-radius: 8rpx;
+  border: 2rpx solid #fff;
+  margin-right: 3rpx;
+  box-sizing: border-box;
+}
+
+.joker-card {
+  width: 100rpx;
+  height: 109rpx;
+  border-radius: 8rpx;
+  border: 2rpx solid #333;
+  margin-right: 3rpx;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20rpx;
+  font-weight: bold;
+  text-align: center;
+  word-break: break-all;
+  overflow: hidden;
+}
+
+.joker-name {
+  font-size: 20rpx;
+  font-weight: bold;
+}
+
+/* 星球牌商品区样式（改为横向扁长条） */
+.planet-offers {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+  margin: 20rpx 0 40rpx;
+  padding: 0 20rpx;
+}
+.planet-card {
+  position: relative;
+  width: 100%;
+  height: 80rpx;
+  background: repeating-linear-gradient(135deg, #e3f2fd 0 8rpx, #fff 8rpx 16rpx);
+  border: 2rpx solid #2196F3;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.planet-card.sold { opacity: 0.5; }
+.planet-inner {
+  width: 100%;
+  padding: 0 24rpx;
+  display: flex;
+  align-items: center;
+}
+.planet-type { color: #333; font-size: 28rpx; font-weight: 600; }
+.planet-level { color: #333; font-size: 28rpx; font-weight: 700; }
+.price {
+  color: #333;
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+/* 4段布局 */
+.segment {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.name-segment {
+  justify-content: flex-start;
+}
+.level-segment, .rarity-segment {
+  justify-content: center;
+}
+.price-segment {
+  justify-content: flex-end;
+}
+
+.planet-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.planet-vertical.small {
+  transform: scale(0.8);
+}
+.vertical-char {
+  color: #333;
+  font-size: 24rpx;
+  line-height: 1.1;
+}
+.level-char {
+  font-weight: bold;
+}
+
+/* 小丑牌商品区样式 */
+.joker-offers {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+  margin: 20rpx 0 40rpx;
+  padding: 0 20rpx;
+}
+
+.joker-offer-card {
+  position: relative;
+  width: 100%;
+  border: 2rpx solid #333;
+  border-radius: 16rpx;
+  overflow: hidden;
+  background-color: white;
+}
+
+.joker-offer-card.sold { 
+  opacity: 0.5; 
+}
+
+.joker-card-header {
+  padding: 12rpx;
+  text-align: center;
+}
+
+.joker-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8rpx;
+}
+
+.joker-name {
+  font-size: 28rpx;
+  font-weight: bold;
+  flex: 1;
+  text-align: left;
+}
+
+.joker-category {
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: inherit;
+  padding: 2rpx 8rpx;
+  border-radius: 8rpx;
+  font-size: 20rpx;
+  font-weight: normal;
+}
+
+.joker-price {
+  font-size: 24rpx;
+  font-weight: bold;
+  color: inherit;
+  text-align: right;
+}
+
+.joker-card-body {
+  padding: 12rpx;
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.joker-effect {
+  display: block;
+  font-size: 24rpx;
+  color: #333;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.bag-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+.bag-panel {
+  width: 95%;
+  max-width: 800rpx;
+  height: 1000rpx;
+  background: #2f2f2f;
+  border-radius: 16rpx;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.bag-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12rpx 20rpx;
+  background: #1f1f1f;
+}
+.bag-title { flex: 1; text-align: center; color: #eee; }
+.use-btn { background: #4CAF50; color: #fff; border: none; }
+.sell-btn { background: #e53935; color: #fff; border: none; margin-right: 8rpx; }
+.right-actions { display: flex; align-items: center; }
+.close-btn {
+  background: transparent;
+  color: #fff;
+  border: 1rpx solid #666;
+}
+/* 背包中的星球牌展示（横向扁条） */
+.bag-grid { 
+  flex: 1;
+  padding: 12rpx;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12rpx;
+  overflow-y: auto;
+}
+.bag-planet {
+  height: 80rpx;
+  background: #fff;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  border: 2rpx solid transparent;
+}
+.bag-planet.selected {
+  border-color: #ffd54f;
+  box-shadow: 0 0 12rpx rgba(255, 213, 79, 0.6);
+}
+.planet-inner.small { width: 100%; padding: 0 16rpx; display: flex; align-items: center; justify-content: space-between; }
+.planet-type, .planet-level { color: #333; }
+.empty-tip {
+  color: #aaa;
+  text-align: center;
+  grid-column: 1/-1;
+} 
+
+/* 复用比赛信息覆盖层样式（与游戏页面一致） */
+.info-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.info-panel {
+  width: 86%;
+  max-width: 700rpx;
+  background: #2b2b2b;
+  color: #eee;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+.info-header {
+  display: flex;
+  align-items: center;
+  padding: 12rpx;
+  background: #1f1f1f;
+}
+.tab-btn {
+  background: transparent;
+  color: #bbb;
+  padding: 10rpx 20rpx;
+  border: none;
+  font-size: 28rpx;
+}
+.tab-btn.active {
+  color: #fff;
+  border-bottom: 4rpx solid #ff9800;
+}
+.close-btn {
+  margin-left: auto;
+  background: transparent;
+  color: #ccc;
+  font-size: 36rpx;
+  padding: 0 16rpx;
+  border: none;
+}
+.info-body { padding: 16rpx 20rpx 24rpx; }
+.info-table { width: 100%; }
+.info-row { display: flex; align-items: center; padding: 8rpx 0; border-bottom: 1rpx solid rgba(255,255,255,0.06); }
+.col-level { width: 100rpx; }
+.col-type { flex: 1; min-width: 200rpx; }
+.col-product { width: 260rpx; display: flex; align-items: center; gap: 8rpx; justify-content: flex-start; }
+.col-count { width: 180rpx; text-align: right; }
+.multiply-x { background: #000; border-radius: 10rpx; padding: 0 12rpx; height: 36rpx; line-height: 36rpx; font-size: 24rpx; font-weight: bold; }
+.info-row .chip-label { background: #1976d2; color: #fff; border-radius: 16rpx; padding: 0 14rpx; height: 36rpx; line-height: 36rpx; font-size: 24rpx; }
+.info-row .multiplier-label { background: #e53935; color: #fff; border-radius: 16rpx; padding: 0 14rpx; height: 36rpx; line-height: 36rpx; font-size: 24rpx; }
+.empty-tip { color: #bbb; text-align: center; padding: 40rpx 0; } 
+
+.bag-toolbar-row1 { padding: 12rpx 20rpx; background: #333; }
+.bag-toolbar-row2 { padding: 12rpx 20rpx; background: #333; display: flex; gap: 12rpx; }
+.toggle-select-btn { background: #1976d2; color: #fff; border: none; padding: 8rpx 16rpx; font-size: 28rpx; }
+.use-btn, .sell-btn { padding: 8rpx 16rpx; font-size: 28rpx; } 
+
+/* 商店状态信息样式 */
+.shop-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20rpx 0;
+  padding: 16rpx;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.2);
+}
+
+.status-text {
+  color: #ffd700;
+  font-size: 24rpx;
+  font-weight: 600;
+  margin: 4rpx 0;
+  text-align: center;
+}
+
+/* 无小丑牌可购买时的提示样式 */
+.no-jokers-tip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40rpx 0;
+  padding: 32rpx;
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  border-radius: 16rpx;
+  border: 2rpx solid #4CAF50;
+  box-shadow: 0 4rpx 12rpx rgba(76, 175, 80, 0.3);
+}
+
+.tip-text {
+  color: #fff;
+  font-size: 28rpx;
+  font-weight: 600;
+  margin: 8rpx 0;
+  text-align: center;
+  text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.3);
+} 
+
+/* 下一回合按钮（商店页） */
+.shop-next-row{margin:12rpx 0 20rpx}
+.next-round-btn{width:100%;height:72rpx;line-height:72rpx;background:#ff5722;color:#fff;border:none;border-radius:10rpx;font-size:30rpx;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center;padding:0;box-sizing:border-box} 

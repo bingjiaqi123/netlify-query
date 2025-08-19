@@ -1,0 +1,20 @@
+<!--pages/settings/settings.wxml-->
+<view class="container">
+  <!-- 顶部安全区域和返回按钮 -->
+  <view class="safe-header">
+    <button class="back-btn" bindtap="goBack">返回</button>
+  </view>
+
+  <!-- 功能卡片 -->
+  <view class="section">
+    <text class="section-title">设置</text>
+    <view class="card" bindtap="goToUserInfo">
+      <text class="card-title">用户信息</text>
+      <text class="card-desc">查看和修改用户信息</text>
+    </view>
+    <view class="card" bindtap="goToBackup">
+      <text class="card-title">存档管理</text>
+      <text class="card-desc">管理游戏存档数据</text>
+    </view>
+  </view>
+</view> 

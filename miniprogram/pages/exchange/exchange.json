@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "交易所",
+  "usingComponents": {
+    "top-header": "/components/top-header/top-header"
+  }
+} 

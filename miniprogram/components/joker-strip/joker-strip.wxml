@@ -1,0 +1,13 @@
+<view class="joker-container">
+  <!-- 单行：前7个小丑牌 -->
+  <view class="joker-row joker-row-center">
+    <block wx:for="{{processedJokers}}" wx:key="*this">
+      <view wx:if="{{index < 7}}" class="joker-card {{item.isActive ? 'joker-card-active' : ''}} {{item.colorState ? 'joker-card-' + item.colorState : ''}} {{item.hasLaserShadow ? 'joker-card-blueprint' : ''}}" style="background-color: {{item.backgroundColor || '#ffe082'}}; color: {{item.textColor || '#333'}};" data-index="{{index}}" bindtap="onTapJoker">
+        <text class="joker-name">{{item.name}}</text>
+      </view>
+    </block>
+    <block wx:for="{{firstRowBackCount|range}}" wx:key="*this">
+      <view class="joker-card-back"></view>
+    </block>
+  </view>
+</view> 

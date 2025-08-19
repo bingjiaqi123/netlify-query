@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "top-header": "/components/top-header/top-header"
+  },
+  "navigationBarTitleText": "选择模式",
+  "navigationStyle": "custom"
+} 

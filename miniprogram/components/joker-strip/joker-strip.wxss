@@ -1,0 +1,125 @@
+.joker-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.joker-row { 
+  display: flex; 
+  flex-direction: row; 
+  align-items: flex-end; 
+  min-height: 160rpx; 
+}
+
+.joker-row-left {
+  justify-content: flex-start;
+}
+
+.joker-row-center {
+  justify-content: center;
+}
+
+.joker-card { 
+  width: 110rpx; 
+  height: 149rpx; 
+  border-radius: 8rpx; 
+  border: 2rpx solid #333; 
+  margin: 0 5rpx; 
+  box-sizing: border-box; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-size: 20rpx; 
+  font-weight: bold; 
+  text-align: center; 
+  word-break: break-all; 
+  overflow: hidden; 
+}
+
+.joker-card-active { 
+  border: 2rpx solid #FFD700; 
+  box-shadow: 0 0 10rpx #FFD700; 
+}
+
+.joker-card-yellow { 
+  border: 2rpx solid #FFD700; 
+  box-shadow: 0 0 10rpx #FFD700; 
+}
+
+.joker-card-orange { 
+  border: 2rpx solid #FFA500; 
+  box-shadow: 0 0 10rpx #FFA500; 
+}
+
+.joker-card-red { 
+  border: 2rpx solid #FF0000; 
+  box-shadow: 0 0 10rpx #FF0000; 
+}
+
+.joker-card-purple { 
+  border: 2rpx solid #800080; 
+  box-shadow: 0 0 10rpx #800080; 
+}
+
+.joker-card-back { 
+  width: 110rpx; 
+  height: 149rpx; 
+  background: transparent; 
+  border-radius: 8rpx; 
+  border: 2rpx solid #fff; 
+  margin: 0 5rpx; 
+  box-sizing: border-box; 
+}
+
+.joker-name { 
+  font-size: 20rpx; 
+  font-weight: bold; 
+}
+
+.joker-card-deep-blue {
+  border: 2rpx solid #1565C0;
+  box-shadow: 0 0 10rpx #1565C0;
+}
+
+.joker-card-light-blue {
+  border: 2rpx solid #42A5F5;
+  box-shadow: 0 0 10rpx #42A5F5;
+}
+
+.joker-card-green {
+  border: 2rpx solid #4CAF50;
+  box-shadow: 0 0 10rpx #4CAF50;
+}
+
+.joker-card-pink {
+  border: 2rpx solid #E91E63;
+  box-shadow: 0 0 10rpx #E91E63;
+}
+
+/* 模仿者复制小丑牌的镭射阴影效果 */
+.joker-card-blueprint {
+  position: relative;
+}
+
+.joker-card-blueprint::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, 
+    rgba(255, 255, 255, 0.1) 0%, 
+    rgba(255, 255, 255, 0.3) 25%, 
+    rgba(255, 255, 255, 0.1) 50%, 
+    rgba(255, 255, 255, 0.3) 75%, 
+    rgba(255, 255, 255, 0.1) 100%);
+  border-radius: inherit;
+  pointer-events: none;
+  animation: laser-shine 2s ease-in-out infinite;
+}
+
+@keyframes laser-shine {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+} 

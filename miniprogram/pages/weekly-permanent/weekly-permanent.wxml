@@ -1,0 +1,101 @@
+<view class="container">
+  <!-- 顶部返回按钮 -->
+  <view class="top-header">
+    <button class="back-btn" bindtap="goBack">返回</button>
+  </view>
+
+  <!-- 页面标题 -->
+  <view class="page-title">每周常驻任务池</view>
+
+  <!-- 任务列表 -->
+  <view class="task-list">
+    <block wx:for="{{permanentTasks}}" wx:key="id">
+      <view class="task-card {{item.isPreset ? 'preset' : ''}}">
+        <view class="task-content">
+          <view class="task-header-row">
+            <text class="task-title">{{item.title}}</text>
+            <view class="task-actions" wx:if="{{!item.isPreset}}">
+              <button class="edit-btn" data-id="{{item.id}}" bindtap="editTask">🖊️</button>
+              <button class="delete-btn" data-id="{{item.id}}" bindtap="deleteTask">🗑️</button>
+            </view>
+          </view>
+          <text class="task-desc">{{item.desc}}</text>
+          <view class="task-rewards">
+            <view wx:if="{{item.hasCoin}}" class="reward coin">
+              <image src="../../images/coin.png" class="reward-icon" />{{item.coin}}
+            </view>
+            <view wx:if="{{item.hasDiamond}}" class="reward diamond">
+              <image src="../../images/diamond.png" class="reward-icon" />{{item.diamond}}
+            </view>
+            <text wx:if="{{item.hasCustom}}" class="reward custom">{{item.custom}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+    <view wx:if="{{!permanentTasks || permanentTasks.length === 0}}" class="empty-tip">暂无任务</view>
+  </view>
+
+
+
+</view>
+
+<!-- 编辑任务面板 -->
+<view class="publish-panel {{showEditPanel ? 'show' : ''}}" wx:if="{{showEditPanel}}" catchtouchmove>
+  <view class="panel-content">
+    <view class="panel-header">
+      <text class="panel-title">编辑任务</text>
+      <view class="header-actions">
+        <button class="cancel-btn" bindtap="hideEditPanel">取消</button>
+        <button class="publish-btn" bindtap="updateTask">更新</button>
+      </view>
+    </view>
+
+    <view class="input-group">
+      <!-- 任务标题 -->
+      <view class="input-section">
+        <text class="section-label">任务标题</text>
+        <input class="title-input" placeholder="请输入任务标题（必填）" value="{{draft.title}}" bindinput="onDraftTitle" />
+      </view>
+
+      <!-- 任务描述 -->
+      <view class="input-section">
+        <text class="section-label">任务描述</text>
+        <textarea class="desc-textarea" placeholder="请输入任务描述" value="{{draft.desc}}" bindinput="onDraftDesc"></textarea>
+      </view>
+
+      <!-- 奖励设置标题 -->
+      <view class="reward-title-row">
+        <text class="reward-title">奖励设置</text>
+      </view>
+
+      <!-- 铜钱设置 -->
+      <view class="reward-setting-row">
+        <view class="check-box {{draft.hasCoin ? 'checked' : ''}}" data-type="coin" bindtap="toggleCoinReward"><text class="tick" wx:if="{{draft.hasCoin}}">√</text></view>
+        <image src="../../images/coin.png" class="reward-icon" />
+        <input class="reward-number-input" type="number" placeholder="100" value="{{draft.coin}}" data-type="coin" bindinput="onRewardInput" />
+        <button class="reward-btn minus" data-type="coin" bindtap="decreaseReward">➖</button>
+        <button class="reward-btn plus" data-type="coin" bindtap="increaseReward">➕</button>
+      </view>
+
+      <!-- 钻石设置 -->
+      <view class="reward-setting-row">
+        <view class="check-box {{draft.hasDiamond ? 'checked' : ''}}" data-type="diamond" bindtap="toggleDiamondReward"><text class="tick" wx:if="{{draft.hasDiamond}}">√</text></view>
+        <image src="../../images/diamond.png" class="reward-icon" />
+        <input class="reward-number-input" type="number" placeholder="10" value="{{draft.diamond}}" data-type="diamond" bindinput="onRewardInput" />
+        <button class="reward-btn minus" data-type="diamond" bindtap="decreaseReward">➖</button>
+        <button class="reward-btn plus" data-type="diamond" bindtap="increaseReward">➕</button>
+      </view>
+
+      <!-- 自定义设置 -->
+      <view class="reward-setting-row">
+        <view class="check-box {{draft.hasCustom ? 'checked' : ''}}" data-type="custom" bindtap="toggleCustomReward"><text class="tick" wx:if="{{draft.hasCustom}}">√</text></view>
+        <text class="reward-label">自定义</text>
+      </view>
+
+      <!-- 自定义输入框 -->
+      <view class="custom-input-section" wx:if="{{draft.hasCustom}}">
+        <textarea class="custom-textarea" placeholder="请输入自定义奖励" value="{{draft.custom}}" bindinput="onCustomInput"></textarea>
+      </view>
+    </view>
+  </view>
+</view>

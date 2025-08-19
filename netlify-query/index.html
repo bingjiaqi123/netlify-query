@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务成就查询系统</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 任务成就查询</h1>
+            <p>查询所有组、任务、成就的ID</p>
+        </header>
+
+        <!-- 标签页导航 -->
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="groups">组</button>
+            <button class="tab-btn" data-tab="daily">日常</button>
+            <button class="tab-btn" data-tab="weekly">活动</button>
+            <button class="tab-btn" data-tab="achievements">成就</button>
+        </nav>
+
+        <!-- 搜索框 -->
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="搜索名称或描述..." class="search-input">
+            <button id="clearSearch" class="clear-btn">清空</button>
+        </div>
+
+        <!-- 内容区域 -->
+        <main class="content">
+            <!-- 组页面 -->
+            <div id="groups" class="tab-content active">
+                <h2>📁 任务组</h2>
+                <div id="groupsList" class="items-list"></div>
+            </div>
+
+            <!-- 日常任务页面 -->
+            <div id="daily" class="tab-content">
+                <h2>📅 日常任务</h2>
+                <div id="dailyList" class="items-list"></div>
+            </div>
+
+            <!-- 活动任务页面 -->
+            <div id="weekly" class="tab-content">
+                <h2>🎯 活动任务</h2>
+                <div id="weeklyList" class="items-list"></div>
+            </div>
+
+            <!-- 成就页面 -->
+            <div id="achievements" class="tab-content">
+                <h2>🏆 成就</h2>
+                <div id="achievementsList" class="items-list"></div>
+            </div>
+        </main>
+
+        <!-- 统计信息 -->
+        <footer class="stats">
+            <span id="totalCount">总计: 0</span>
+            <span id="filteredCount">显示: 0</span>
+        </footer>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 

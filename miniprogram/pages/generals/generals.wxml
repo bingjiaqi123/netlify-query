@@ -1,0 +1,81 @@
+<!--pages/generals/generals.wxml-->
+<view class="container">
+  <!-- 顶部导航 -->
+  <top-header goBack="{{true}}" />
+
+  <!-- 页面标题 -->
+  <view class="header">
+    <text class="title">角色</text>
+  </view>
+
+  <!-- 角色列表 -->
+  <view class="generals-list">
+    <view class="general-card" wx:for="{{generals}}" wx:key="id">
+      <!-- 角色头像区域 -->
+      <view class="general-avatar">
+        <view class="avatar-placeholder">{{item.name[0]}}</view>
+        <view class="rarity-badge" style="background-color: {{item.rarityColor}}">{{item.rarity}}</view>
+      </view>
+
+      <!-- 角色信息区域 -->
+      <view class="general-info">
+        <view class="general-name">{{item.name}}</view>
+        <view class="general-details">
+          <text class="general-force" style="color: {{item.forceColor}}">{{item.forceName}}</text>
+          <text class="separator">·</text>
+          <text class="general-role" style="color: {{item.roleTypeColor}}">{{item.roleTypeName}}</text>
+        </view>
+        <view class="general-level">Lv.{{item.level}}/{{item.maxLevel}}</view>
+      </view>
+
+      <!-- 角色技能区域（中间） -->
+      <view class="general-skills">
+        <view class="skill-tag" wx:for="{{item.skills}}" wx:key="id" wx:for-item="skill" wx:for-index="skillIndex" 
+              bindtap="showSkillDetail" data-skill="{{skill}}" data-general-name="{{item.name}}">
+          <text class="skill-name">{{skill.name}}</text>
+          <text class="skill-level {{skill.currentLevel > 0 ? 'active' : 'inactive'}}">Lv.{{skill.currentLevel}}</text>
+        </view>
+      </view>
+
+      <!-- 碎片信息和操作按钮区域（右边） -->
+      <view class="fragments-section">
+        <view class="fragments-info">
+          <text class="fragments-label">碎片</text>
+          <text class="fragments-value {{item.fragments >= item.fragmentsNeeded ? 'enough' : ''}}">
+            {{item.fragments}}/{{item.fragmentsNeeded}}
+          </text>
+        </view>
+        
+        <!-- 操作按钮区域 -->
+        <view class="action-buttons">
+          <!-- 升级/突破按钮 -->
+          <button 
+            class="action-btn upgrade-btn {{item.canUpgrade ? 'active' : 'disabled'}}"
+            bindtap="upgradeGeneral"
+            data-id="{{item.id}}"
+            disabled="{{!item.canUpgrade}}"
+          >
+            {{item.canBreakthrough ? '突破' : '升级'}}
+          </button>
+          
+          <!-- 觉醒按钮 -->
+          <button 
+            class="action-btn awaken-btn {{item.canAwaken ? 'active' : 'disabled'}}"
+            bindtap="awakenGeneral"
+            data-id="{{item.id}}"
+            disabled="{{!item.canAwaken}}"
+            wx:if="{{!item.isAwakened}}"
+          >
+            觉醒
+          </button>
+          
+          <!-- 觉醒等级显示 -->
+          <view class="awaken-level" wx:if="{{item.isAwakened}}">
+            <text class="awaken-text">觉醒</text>
+            <text class="awaken-value">Lv.{{item.awakenLevel}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view> 

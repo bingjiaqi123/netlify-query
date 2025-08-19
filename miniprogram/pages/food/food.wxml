@@ -1,0 +1,27 @@
+<!--pages/food/food.wxml-->
+<view class="container">
+  <!-- 顶部标题和返回按钮 -->
+  <view class="header">
+    <button class="back-btn" bindtap="goBack">返回</button>
+    <text class="page-title">餐饮系统</text>
+  </view>
+
+  <!-- 功能按钮区域 -->
+  <view class="food-options">
+    <button class="food-btn" bindtap="navigateToWarehouse">
+      <text class="btn-text">查看仓库</text>
+    </button>
+    <button class="food-btn" bindtap="navigateToCooking">
+      <text class="btn-text">自己下厨</text>
+    </button>
+    <button class="food-btn" bindtap="navigateToTakeout">
+      <text class="btn-text">订外卖</text>
+    </button>
+    <button class="food-btn" bindtap="navigateToCanteen">
+      <text class="btn-text">食堂推荐</text>
+    </button>
+    <button class="food-btn" bindtap="navigateToRestaurant">
+      <text class="btn-text">餐厅堂食</text>
+    </button>
+  </view>
+</view> 

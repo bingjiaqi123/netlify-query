@@ -1,0 +1,77 @@
+/* pages/food/food.wxss */
+
+.container {
+  padding: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 顶部标题和返回按钮 */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx;
+  margin-top: 60rpx;
+  gap: 16rpx;
+}
+
+.page-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  flex: 1;
+  text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.3);
+}
+
+.back-btn {
+  background: #007aff;
+  color: #fff;
+  border: none;
+  border-radius: 16rpx;
+  padding: 16rpx 24rpx;
+  font-size: 36rpx;
+  min-height: 80rpx;
+  flex-shrink: 0;
+}
+
+/* 功能按钮区域 */
+.food-options {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24rpx;
+  padding: 40rpx;
+  margin-top: 60rpx;
+}
+
+.food-btn {
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 16rpx;
+  padding: 32rpx 24rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10rpx);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120rpx;
+}
+
+.food-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.2);
+}
+
+.btn-text {
+  font-size: 32rpx;
+  font-weight: 600;
+} 
