@@ -1,6 +1,0 @@
-{
-	"usingComponents": {
-		"joker-strip": "/components/joker-strip/joker-strip",
-		"joker-mimic-selector": "/components/joker-mimic-selector/joker-mimic-selector"
-	}
-} 

@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "角色",
-  "navigationStyle": "custom",
-  "usingComponents": {
-    "top-header": "/components/top-header/top-header"
-  }
-} 

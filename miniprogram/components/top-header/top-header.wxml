@@ -1,6 +1,0 @@
-<view class="safe-header"></view>
-<view class="header-row">
-  <button class="back-btn" bindtap="onBack">返回</button>
-  <view class="right"><slot name="right"></slot></view>
-</view>
-<slot></slot> 
